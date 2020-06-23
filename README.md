@@ -6,7 +6,7 @@ we just need to prepare an image that will be used as a background, and then run
 ## TESTED
 * ** Kali Linux 2020.2 - [Desktop GNOME]
 
-## How To Use :
+### How To Use :
 Instructions on how to use the **Background Login Screen**:
 
 ```bash
@@ -17,7 +17,7 @@ sudo chmod +x back.sh
 sudo bash run.sh
 ```
 
-## Return to the background of the default Kalilinux login screen
+### Return to the background of the default Kalilinux login screen
 
 ```bash
 sudo bash back.sh
