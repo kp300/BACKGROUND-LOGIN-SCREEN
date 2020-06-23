@@ -131,7 +131,7 @@ for i in `sudo gresource list $gst`; do
 done
 
 if [[ -e $tgstg ]]; then
-  printf " \033[92m[\e[0;34m✔\033[92m] Succesfully!"
+  printf " \033[92m[\e[0;34m✔\033[92m] Succesfully!\n"
 else
   printf "\n \e[0;34m[\e[1;31mX\e[0;34m] \e[1;31mgnome-shell.css not found!\n"
   echo ""
