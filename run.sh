@@ -110,7 +110,7 @@ if ! [ "$?" -eq "0" ]; then
    sleep 1;clear
 fi
 
-libgtk=$(which pkg-config --exists gtk+-3.0)
+libgtk=$(pkg-config --cflags gtk+-3.0)
 if ! [[ $libgtk ]]; then
   printf "\n \033[92m[\e[0;34m*\e[1;32m] \e[0;33mStart Installing"; load2;
   echo ""
