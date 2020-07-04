@@ -110,8 +110,8 @@ if ! [ "$?" -eq "0" ]; then
    sleep 1;clear
 fi
 
-libgtk=$(pkg-config --cflags gtk+-3.0 > /dev/null 2>&1)
-if ! [[ $libgtk ]]; then
+#libgtk=$(pkg-config --cflags gtk+-3.0)
+if [[ ! -e /usr/lib/x86_64-linux-gnu/pkgconfig/gtk+-3.0.pc ]]; then
   printf "\n \033[92m[\e[0;34m*\e[1;32m] \e[0;33mStart Installing"; load2;
   echo ""
   sudo apt install libgtk-3-dev -y
