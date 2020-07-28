@@ -109,7 +109,7 @@ image=$(sudo zenity --file-filter=""*.png" "*.jpg"" --title="Choose Image" --fil
 
 if [[ -e $image ]]; then
   printf "\n\n\033[92m[\e[0;34m✔\033[92m]\e[0;33m Image found:\e[0m\e[1;77m $image\n"
-  sudo cp $image ${rgs}theme/
+  sudo cp $image ${rgs}theme/ > /dev/null 2>&1
   sleep 2
 else
   sudo rm -rf result
