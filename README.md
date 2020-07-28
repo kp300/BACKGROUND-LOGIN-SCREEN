@@ -1,4 +1,4 @@
-# Change Background Login Screen [Kali Linux]
+# Change Background Login Screen [Kali Linux 2020]
 
 Actually it is not that difficult to change the background of the login screen in Kali Linux.
 we just need to prepare an image that will be used as a background, and then run the script it will automatically create a login screen background on your kali linux.
