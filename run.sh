@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-#  CHANGE BACKGROUND LOGIN SCREEN FOR KALI LINUX 2020.2
+#  CHANGE BACKGROUND LOGIN SCREEN FOR KALI LINUX 2020
 # Youtube: KaliPentesting
 
 load1 () { sleep .5;echo -ne .;sleep .5;echo -ne .;sleep .5;echo -ne .;sleep .4;echo -ne .;echo -ne .;sleep .2; }
