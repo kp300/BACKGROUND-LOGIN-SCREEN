@@ -90,10 +90,6 @@ if ! [ -z $image ]; then
   fi
 fi
 
-if [ -z $color_background ]; then
-  printf "\033[0;31mExiting\e[0m..\n"
-  exit 1;
-fi
 if [ -z "$colors" ]; then
   if [ "$rolling" == "Kali" ]; then
     color="#41494c"
@@ -153,7 +149,6 @@ echo "<?xml version="1.0" encoding="UTF-8"?>" > $css/gnome-shell-theme.gresource
 sleep 1
 echo "<gresources>" >> $css/gnome-shell-theme.gresource.xml
 echo '  <gresource prefix="/org/gnome/shell/theme">' >> $css/gnome-shell-theme.gresource.xml
-
 for i in `gresource list /usr/share/gnome-shell/gnome-shell-theme.gresource | sed 's/.......................//'`; do
   echo "    <file>$i</file>" >> $css/gnome-shell-theme.gresource.xml
 done
