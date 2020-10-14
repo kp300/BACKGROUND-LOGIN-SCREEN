@@ -1,13 +1,11 @@
-# Change Background Login Screen [Kali Linux 2020]
+# Change Background Login Screen For [Kali Linux 2020.3 & UBUNTU 20.04]
 
-Actually it is not that difficult to change the background of the login screen in Kali Linux.
-we just need to prepare an image that will be used as a background, and then run the script it will automatically create a login screen background on your kali linux.
-
-### Screenshoot
-![screenshoot](https://user-images.githubusercontent.com/58439463/85416825-20045500-b599-11ea-9cf3-65de03860bb5.png)
+This script only changes the login background on Kali Linux 2020.3 and Ubuntu 20.04. the latest.
+You can change the login background color by selecting your favorite color. And if you want to change the login background with an image, we only need to prepare an image then running the script will automatically change the login screen background on your linux.
 
 ## TESTED:
-* Kali Linux 2020.2 - [Desktop GNOME]
+* Kali Linux 2020.3 [Desktop GNOME]
+* Ubuntu 20.04
 
 ### How To Use :
 Instructions on how to use the **Background Login Screen**:
@@ -15,17 +13,27 @@ Instructions on how to use the **Background Login Screen**:
 ```bash
 git clone https://github.com/kp300/BACKGROUND-LOGIN-SCREEN.git
 cd BACKGROUND-LOGIN-SCREEN
-sudo chmod +x run.sh
-sudo chmod +x back.sh
-sudo bash run.sh
+sudo chmod +x login-background.sh
+```
+
+**Kali Linux**:
+
+```bash
+sudo bash login-background.sh kali
+```
+
+**Ubuntu 20.04**:
+
+```bash
+sudo bash login-background.sh ubuntu
+```
+
+### Reset automatically to the original background for **KALI LINUX** and **UBUNTU**:
+
+```bash
+sudo bash login-background.sh -reset
 ```
 
 ### Screenshoot
-![background-login](https://user-images.githubusercontent.com/58439463/87871917-af592880-c9de-11ea-90dc-01732f456b2d.png)
-
-### RESTORE TO DEFAULT BACKGROUND LOGIN SCREEN KALI LINUX:
-
-```bash
-sudo bash back.sh
-```
-
+![background-login-ubuntu](https://user-images.githubusercontent.com/58439463/96018458-7dd4e980-0e75-11eb-8d8d-6d33c3b3ebaf.png)
+![background-login-kali](https://user-images.githubusercontent.com/58439463/87871917-af592880-c9de-11ea-90dc-01732f456b2d.png)
