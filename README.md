@@ -35,5 +35,6 @@ sudo bash login-background.sh -reset
 ```
 
 ### Screenshoot
-![background-login-ubuntu](https://user-images.githubusercontent.com/58439463/96018458-7dd4e980-0e75-11eb-8d8d-6d33c3b3ebaf.png)
-![background-login-kali](https://user-images.githubusercontent.com/58439463/87871917-af592880-c9de-11ea-90dc-01732f456b2d.png)
+| Ubuntu | Kali Linux	|
+| ------------  | ------------ |
+|![background-login-ubuntu](https://user-images.githubusercontent.com/58439463/96018458-7dd4e980-0e75-11eb-8d8d-6d33c3b3ebaf.png)|![background-login-kali](https://user-images.githubusercontent.com/58439463/87871917-af592880-c9de-11ea-90dc-01732f456b2d.png)
