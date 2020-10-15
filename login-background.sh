@@ -69,9 +69,9 @@ color_background=3
 \e[0m\e[1;92mThis only changes the background login color. without pictures.\e[0m
 \e[0m\e[1;92mAnd see there are still many colors here: https://www.color-hex.com/\e[0m
   Command Example : #00ff5e
-  color Magenta   : \e[35m#ff00ff\e[0m
-  color Light_blue: \e[94m#add8e6\e[0m
-  color Light_cyan: \e[96m#E0FFFF\e[0m
+  color Magenta   : #ff00ff
+  color Light_blue: #add8e6
+  color Light_cyan: #E0FFFF
 ------------------------------------------------------------------\n\n"
 while [ "$colors" == "" ]; do
   read -p $'\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] \e[0mColor for login background: ' colors
@@ -129,15 +129,9 @@ if [ ! -d /tmp/gnome-shell/ ]; then
   mkdir -p ${css}/icons/
 fi
 
-if [ ! -e $kali_gsource.bak ]; then
-  for i in `sudo gresource list $kali_gsource`; do
-    gresource extract $kali_gsource $i > /tmp/gnome-shell/${i#\/org\/gnome\/shell/}
-  done
-else
-  for i in `sudo gresource list $kali_gsource.bak`; do
-    gresource extract $kali_gsource.bak $i > /tmp/gnome-shell/${i#\/org\/gnome\/shell/}
-  done
-fi
+for i in `sudo gresource list $kali_gsource`; do
+  gresource extract $kali_gsource $i > /tmp/gnome-shell/${i#\/org\/gnome\/shell/}
+done
 
 if [ ! -e "$css/gnome-shell.css" ]; then
   printf "\n\e[0;34m[\e[1;31mx\e[0;34m] \e[1;31mDidn't find gnome-shell.css on the path '$css/gnome-shell.css'.. Canceled!\e[0;33m\n"
