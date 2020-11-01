@@ -16,6 +16,9 @@ cd BACKGROUND-LOGIN-SCREEN
 sudo chmod +x login-background.sh
 ```
 
+### YouTube:
+How to use it, watch here: https://www.youtube.com/watch?v=Dq0W71Pfc5U
+
 **Kali Linux**:
 
 ```bash
