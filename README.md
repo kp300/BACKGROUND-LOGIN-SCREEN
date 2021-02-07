@@ -42,4 +42,4 @@ sudo bash login-background.sh --reset
 # Donate
 ***Buy me a coffee! :coffee:***
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/kalitutorial)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/kalitutorial)
