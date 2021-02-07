@@ -1,153 +1,118 @@
-#!/usr/bin/bash
-#   CHANGE BACKGROUND LOGIN SCREEN FOR Kali Linux 2020 & Ubuntu 2020
-# Youtube : https://youtube.com/KaliPentesting
-# facebook: https://fb.me/KaliPentesting
-# Twitter : @KaliPentesting
+#!/usr/bin/env bash
 
-id=`awk '{print $1}' /etc/issue`
-user=`who | awk {'print $1'}`
-###############KALI###########################################
-kali_gsource="/usr/share/gnome-shell/gnome-shell-theme.gresource"
-dir="/usr/share/gnome-shell/"
-css="/tmp/gnome-shell/theme"
-rolling=$(hostnamectl | grep Kali | cut -d' ' -f5)
-###############ubuntu#########################################
-ubuntugsource="/usr/share/gnome-shell/theme/Yaru/gnome-shell-theme.gresource"
+#   CHANGE BACKGROUND LOGIN SCREEN FOR Kali Linux 2021 & Ubuntu 2021
+# ---> [Kali Linux 2020.4] & [Ubuntu 20.04, Ubuntu 20.10]
+
+################################# < Support me on (Media Social) > #################################
+# old Youtube : https://youtube.com/KaliPentesting < banned by Youtube :@
+# New Youtube : https://www.youtube.com/channel/UCmTe8G5kk_0UvV2OkxrQJrQ
+# Facebook    : https://fb.me/KaliPentesting
+# Twitter     : @KaliPentesting
+
+################################# < grep User and Distro > #################################
+id=$(awk '{print $1}' /etc/issue)
+user=$(who | awk {'print $1'})
+################################# < Kali > #################################
+gsource_kali="/usr/share/gnome-shell/gnome-shell-theme.gresource"
+gnomeshell="/usr/share/gnome-shell"
+tmp_gnomeshell="/tmp/gnome-shell/theme"
+kali=$(hostnamectl | grep Kali | cut -d' ' -f5)
+################################# < ubuntu > #################################
+gsource_ubuntu="/usr/share/gnome-shell/theme/Yaru/gnome-shell-theme.gresource"
 theme="/org/gnome/shell/theme"
 focal="/usr/local/share/gnome-shell/theme/focalgdm3"
 focal_gsource="/usr/local/share/gnome-shell/theme/focalgdm3.gresource"
-distro=$(hostnamectl | grep Ubuntu | cut -d' ' -f5)
+ubuntu=$(hostnamectl | grep Ubuntu | cut -d' ' -f5)
 UBUNTU_CODENAME=$(cat /etc/os-release | grep UBUNTU_CODENAME | cut -d = -f 2)
 
-for i in `cat /etc/X11/default-display-manager`; do
+##########< use root >##########
+if [[ $(id -u) != "0" ]]; then
+  printf "\033[92m[\e[1;31mX\033[92m] \e[1;31mI Need root to run this script...\n"; exit 1;
+fi
+
+##########< check display manager gdm3 >##########
+for i in $(cat /etc/X11/default-display-manager); do
   if ! grep -q gdm3 $i; then
-    printf "\n\033[92mThis script only changes the Background Screen Login for Gnome Display Manager.
-Exiting..\n"
-    exit 1;
+    printf "\n\033[92mThis script only changes the Background Screen Login for Gnome Display Manager.\n"; exit 1;
+  else
+    command -v zenity > /dev/null 2>&1 || { printf "\n\033[0;31mZenity not found! Install it. Aborting!\n"; exit 0;}
+    command -v glib-compile-resources > /dev/null 2>&1 || { printf "\n\033[0;31mCompile-resources not found! Install it. \033[92msudo apt install libglib2.0-dev\n"; exit 0;}
   fi
 done
 
-command -v zenity > /dev/null 2>&1 || { printf "\033[0;31mZenity not found! Install it. Aborting!\n"; exit 1;}
-command -v glib-compile-resources > /dev/null 2>&1 || { printf "\033[0;31mCompile-resources not found! Install it. \033[92msudo apt install libglib2.0-dev\n"; exit 1;}
+##########< select image & color >##########
+function chooser_path() {
 
-if [[ $(id -u) != "0" ]]; then
-  printf "\033[92m[\e[1;31mX\033[92m] \e[1;31mI Need root to run this script...\n"
-  exit 1
-fi
+printf "\e[0m\e[1;92m[01] \e[0mSelect Images [PNG or JPG]\e[0m\n"
+printf "\e[0m\e[1;92m[02]\e[0m Select Colors [The Hex Color]\e[0m\n\n"
+read -p $'\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m]\e[0m Choose a number 1/2: ' choose_number
 
-help_command(){
-echo "Usage: $(basename -a $0) <options>
-
-   kali   | -kali   : Change Login Background Wallpaper for Kali Linux.
-   ubuntu | -ubuntu : Change Login Background Wallpaper for Ubuntu.
-   reset  | -reset  : Reset automatically to the original background
-                      For KALI LINUX and UBUNTU.
-   help|-help|--help: Help Command.
-"
-exit 1;
-}
-
-succes(){
-  echo "
-
----------------------------------------------------------------
-  All is done!! RESTART And See the New Login-Background :)
----------------------------------------------------------------
-      "
-exit 1;
-}
-
-reseting(){
-if [ -e $kali_gsource.bak ]; then
-  mv $kali_gsource.bak $kali_gsource
-  printf "\n\e[0mReset has been \e[0m\e[1;92msuccessfully..\n"
-  printf "\e[0mNow your $id Linux login background is back to normal.\n\n"
-  exit 1;
-elif [ -e $focal_gsource ]; then
-  update-alternatives --quiet --set gdm3-theme.gresource "$ubuntugsource"
-  rm -rf /usr/local/share/gnome-shell/
-  printf "\n\e[0mReset has been \e[0m\e[1;92msuccessfully..\n"
-  printf "\e[0mNow your $id login background is back to normal.\n\n"
-  exit 1;
-else
-  echo "----------------------------------------------------------------
-Nothing needs resetting. Login background is still the original default $id..
-----------------------------------------------------------------"
-  exit 1
-fi
-}
-
-checkingkali(){
-printf "\n\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] \e[0mChecking script.."
-if [[ "$colors" =~ ^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$ ]]; then
-  sed -i '/#lockDialogGroup {/a\  background-color: '$color'; }' ${css}/gnome.txt
-else
-  cp $image $css/
-  sed -i '/#lockDialogGroup {/a\  background: '$color' url(resource:///org/gnome/shell/theme/'$(basename -a $image)');\n  background-size: cover;\n  background-repeat: no-repeat;\n  background-position: center; }' ${css}/gnome.txt
-  sed -i '/gnome-shell.css/a\    <file>'$(basename $image)'</file>' $css/gnome-shell-theme.gresource.xml
-  if ! grep -q $(basename -a $image) $css/gnome.txt; then
-    printf "\n\033[1;32m[\033[0;31mx\033[1;32m] \033[0;31mCan't find the image name in script.. Canceled!\n\n"
-    rm -rf /tmp/gnome-shell/
-    exit 1;
+if [[ $choose_number -eq 1 ]] && [[ $choose_number -eq 01 ]]; then
+  read -p $'\e[1;77m[\e[0m\e[1;92m?\e[0m\e[1;77m]\e[0m Open the folder and Select Image? [Y/n]: ' openimage
+  if [[ $openimage == "y" ]] || [[ $openimage == "Y" ]] || [[ $openimage == "yes" ]] || [[ $openimage == "YES" ]]; then
+    images=1
+    image=$(zenity --file-filter=""*.png" "*.jpg"" --title="Choose Image .PNG or .JPG" --file-selection --filename="/home/"$user"/")
+  else
+    images=1
+    printf "
+    Command Example: \033[0;32m/home/$user/Pictures/YourImage.PNG or JPG\e[0m
+    Command Example: \033[0;32m/usr/share/backgrounds/warty-final-ubuntu.png\e[0m\n\n"
+    read -p $'\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] \e[0mPut Image Path: ' image
   fi
-fi
-}
+  if [[ ! -e $image ]]; then
+    printf "\033[0;31mThe image path you selected does not exist or cannot be found\e[0m\n"; exit 1;
+  fi
 
-checkingubuntu(){
-printf "\n\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] \e[0mChecking script..";sleep 1;
-if [ ! -e $focal/focalgdm3.gresource.xml ]; then
-  printf "\n\033[1;32m[\033[0;31mx\033[1;32m] \033[0;31mDid not find the required filename.. Canceled!\n\n"
-  rm -rf $focal
-  exit 1;
+elif [[ $choose_number -eq 2 ]] && [[ $choose_number -eq 02 ]]; then
+  color_background=2
+  printf "\n\e[0m\e[1;92mThis only changes the background login color. without pictures.\n\e[1;92mSee there are still many colors here: https://www.color-hex.com/\e[0m\n
+  Command Example: #ff0000\n\n"
+  read -p $'\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] \e[0mColor for login background: ' colors
+  if ! [[ $colors =~ ^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$ ]]; then
+    printf "\033[0;31mThe hex color you input is invalid!\e[0m\n"; exit 1;
+  fi
+
 else
-  (cd $focal/ && glib-compile-resources focalgdm3.gresource.xml && mv focalgdm3.gresource ..)
-fi
-rm -rf $focal
-update-alternatives --quiet --install ${dir}gdm3-theme.gresource gdm3-theme.gresource $focal_gsource 0
-update-alternatives --quiet --set gdm3-theme.gresource $focal_gsource
-}
-
-kali_gs(){
-
-if [ ! -d /tmp/gnome-shell/ ]; then
-  mkdir -p ${css}/icons/scalable/actions
+  printf "\033[0;31mPlease choose number 1 or 2 to Continue..\e[0m\n";sleep 1;
+  clear; banner; chooser_path;
 fi
 
-if [ ! -e $kali_gsource.bak ]; then
-  for i in `sudo gresource list $kali_gsource`; do
-    gresource extract $kali_gsource $i > /tmp/gnome-shell/${i#\/org\/gnome\/shell/}
-  done
+if [[ -z $colors ]]; then
+  if [[ $ubuntu == "Ubuntu" ]]; then
+    color="#4f194c"
+  fi
 else
-  for i in `sudo gresource list $kali_gsource.bak`; do
-    gresource extract $kali_gsource.bak $i > /tmp/gnome-shell/${i#\/org\/gnome\/shell/}
-  done
-fi
-
-if [ ! -e "$css/gnome-shell.css" ]; then
-  printf "\n\e[0;34m[\e[1;31mx\e[0;34m] \e[1;31mDidn't find gnome-shell.css on the path '$css/gnome-shell.css'.. Canceled!\e[0;33m\n"
-  exit 1;
+  color=$colors
 fi
 }
 
-ubuntu_gs(){
-gresource extract $ubuntugsource $theme/gdm3.css > $focal/original.css
-gresource extract $ubuntugsource $theme/checkbox.svg > $focal/checkbox.svg
-gresource extract $ubuntugsource $theme/checkbox-off.svg > $focal/checkbox-off.svg
-gresource extract $ubuntugsource $theme/checkbox-focused.svg > $focal/checkbox-focused.svg
-gresource extract $ubuntugsource $theme/checkbox-off-focused.svg > $focal/checkbox-off-focused.svg
-gresource extract $ubuntugsource $theme/toggle-on.svg > $focal/toggle-on.svg
-gresource extract $ubuntugsource $theme/toggle-off.svg > $focal/toggle-off.svg
-gresource extract $ubuntugsource $theme/icons/scalable/actions/pointer-drag-symbolic.svg > $focal/icons/scalable/actions/pointer-drag-symbolic.svg
-gresource extract $ubuntugsource $theme/icons/scalable/actions/keyboard-enter-symbolic.svg > $focal/icons/scalable/actions/keyboard-enter-symbolic.svg
-gresource extract $ubuntugsource $theme/icons/scalable/actions/keyboard-hide-symbolic.svg > $focal/icons/scalable/actions/keyboard-hide-symbolic.svg
-gresource extract $ubuntugsource $theme/icons/scalable/actions/pointer-secondary-click-symbolic.svg > $focal/icons/scalable/actions/pointer-secondary-click-symbolic.svg
-gresource extract $ubuntugsource $theme/icons/scalable/actions/keyboard-shift-filled-symbolic.svg > $focal/icons/scalable/actions/keyboard-shift-filled-symbolic.svg
-gresource extract $ubuntugsource $theme/icons/scalable/actions/keyboard-caps-lock-filled-symbolic.svg > $focal/icons/scalable/actions/keyboard-caps-lock-filled-symbolic.svg
-gresource extract $ubuntugsource $theme/icons/scalable/actions/pointer-primary-click-symbolic.svg > $focal/icons/scalable/actions/pointer-primary-click-symbolic.svg
-gresource extract $ubuntugsource $theme/icons/scalable/actions/keyboard-layout-filled-symbolic.svg > $focal/icons/scalable/actions/keyboard-layout-filled-symbolic.svg
-gresource extract $ubuntugsource $theme/icons/scalable/actions/eye-not-looking-symbolic.svg > $focal/icons/scalable/actions/eye-not-looking-symbolic.svg
-gresource extract $ubuntugsource $theme/icons/scalable/actions/pointer-double-click-symbolic.svg > $focal/icons/scalable/actions/pointer-double-click-symbolic.svg
-gresource extract $ubuntugsource $theme/icons/scalable/actions/eye-open-negative-filled-symbolic.svg > $focal/icons/scalable/actions/eye-open-negative-filled-symbolic.svg
+##########< configure background login ubuntu >##########
+function ubuntu_configure() {
+
+if [ ! -d $focal ]; then
+  install -d $focal/icons/scalable/actions
+fi
+
+printf "\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] \e[0mMaking theme Script.."
+touch $focal/gdm3.css $focal/focalgdm3.gresource.xml
+gresource extract $gsource_ubuntu $theme/gdm3.css > $focal/original.css
+gresource extract $gsource_ubuntu $theme/checkbox.svg > $focal/checkbox.svg
+gresource extract $gsource_ubuntu $theme/checkbox-off.svg > $focal/checkbox-off.svg
+gresource extract $gsource_ubuntu $theme/checkbox-focused.svg > $focal/checkbox-focused.svg
+gresource extract $gsource_ubuntu $theme/checkbox-off-focused.svg > $focal/checkbox-off-focused.svg
+gresource extract $gsource_ubuntu $theme/toggle-on.svg > $focal/toggle-on.svg
+gresource extract $gsource_ubuntu $theme/toggle-off.svg > $focal/toggle-off.svg
+gresource extract $gsource_ubuntu $theme/icons/scalable/actions/pointer-drag-symbolic.svg > $focal/icons/scalable/actions/pointer-drag-symbolic.svg
+gresource extract $gsource_ubuntu $theme/icons/scalable/actions/keyboard-enter-symbolic.svg > $focal/icons/scalable/actions/keyboard-enter-symbolic.svg
+gresource extract $gsource_ubuntu $theme/icons/scalable/actions/keyboard-hide-symbolic.svg > $focal/icons/scalable/actions/keyboard-hide-symbolic.svg
+gresource extract $gsource_ubuntu $theme/icons/scalable/actions/pointer-secondary-click-symbolic.svg > $focal/icons/scalable/actions/pointer-secondary-click-symbolic.svg
+gresource extract $gsource_ubuntu $theme/icons/scalable/actions/keyboard-shift-filled-symbolic.svg > $focal/icons/scalable/actions/keyboard-shift-filled-symbolic.svg
+gresource extract $gsource_ubuntu $theme/icons/scalable/actions/keyboard-caps-lock-filled-symbolic.svg > $focal/icons/scalable/actions/keyboard-caps-lock-filled-symbolic.svg
+gresource extract $gsource_ubuntu $theme/icons/scalable/actions/pointer-primary-click-symbolic.svg > $focal/icons/scalable/actions/pointer-primary-click-symbolic.svg
+gresource extract $gsource_ubuntu $theme/icons/scalable/actions/keyboard-layout-filled-symbolic.svg > $focal/icons/scalable/actions/keyboard-layout-filled-symbolic.svg
+gresource extract $gsource_ubuntu $theme/icons/scalable/actions/eye-not-looking-symbolic.svg > $focal/icons/scalable/actions/eye-not-looking-symbolic.svg
+gresource extract $gsource_ubuntu $theme/icons/scalable/actions/pointer-double-click-symbolic.svg > $focal/icons/scalable/actions/pointer-double-click-symbolic.svg
+gresource extract $gsource_ubuntu $theme/icons/scalable/actions/eye-open-negative-filled-symbolic.svg > $focal/icons/scalable/actions/eye-open-negative-filled-symbolic.svg
 
 echo '@import url("resource:///org/gnome/shell/theme/original.css");
   #lockDialogGroup {
@@ -180,117 +145,54 @@ echo '<?xml version="1.0" encoding="UTF-8"?>
     <file>icons/scalable/actions/eye-open-negative-filled-symbolic.svg</file>
   </gresource>
 </gresources>' > $focal/focalgdm3.gresource.xml
-}
 
-chooser (){
-printf "\n \e[0m\e[1;92m1. \e[0mTyping image paths on Terminal?\e[0m\n"
-printf " \e[0m\e[1;92m2.\e[0m Open path & Select image?\e[0m\n"
-printf " \e[0m\e[1;92m3.\e[0m Only change the background color?\e[0m\n\n"
-terminal=1
-zenity=2
-color_background=3
-
-while [ "$choose_number" == "" ]; do
-  read -p $'\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m]\e[0m Choose a number 1/2/3: ' choose_number
-done
-
-if [[ "$choose_number" -eq 1 ]] && [[ "$choose_number" -eq 01 ]]; then
-terminal=1
-  printf "
-              \e[0m\e[1;92mEnter Image Path for Login Background\e[0m
-Command Example: \033[0;32m/home/Pictures/YourImage.PNG or JPG\e[0m
-Command Example: \033[0;32m/usr/share/backgrounds/brad-huchteman-stone-mountain.jpg\e[0m
-Command Example: \033[0;32m/usr/share/backgrounds/kali/kali-blue-matrix-16x9.png\e[0m\n\n"
-while [ "$image" == "" ]; do
-  read -p $'\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] \e[0mEnter Image Path: ' image
-done
-
-elif [ "$choose_number" -eq 2 ] && [ "$choose_number" -eq 02 ]; then
-zenity=2
-  image=$(zenity --file-filter=""*.png" "*.jpg"" --title="Choose Image .PNG or .JPG" --file-selection --filename="$user")
-
-elif [ "$choose_number" -eq 3 ] && [ "$choose_number" -eq 03 ]; then
-color_background=3
-  printf "
-------------------------------------------------------------------
-\e[0m\e[1;92mThis only changes the background login color. without pictures.\e[0m
-\e[0m\e[1;92mAnd see there are still many colors here: https://www.color-hex.com/\e[0m
-  Command Example : #00ff5e
-  color Magenta   : \e[35m#ff00ff\e[0m
-  color Light_blue: \e[94m#add8e6\e[0m
-  color Light_cyan: \e[96m#E0FFFF\e[0m
-------------------------------------------------------------------\n\n"
-while [ "$colors" == "" ]; do
-  read -p $'\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] \e[0mColor for login background: ' colors
-done
-fi
-
-if [ -z $image ] && [ -z "$colors" ]; then
-  printf "\033[0;31mExiting\e[0m..\n"
-  exit 1;
-fi
-
-if ! [ -z $image ]; then
-  if ! [ -e $image ]; then
-  printf "\033[0;31mThe image path you selected does not exist or cannot be found\e[0m..\n"
-  exit 1;
-  fi
-fi
-
-if [ -z "$colors" ]; then
-  if [ "$rolling" == "Kali" ]; then
-    color="#41494c"
-  elif [ "$distro" == "Ubuntu" ]; then
-    color="#4f194c"
-  fi
+printf "\n\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] \e[0mChecking script..";sleep 1;
+if [[ ! -e $focal/focalgdm3.gresource.xml ]]; then
+  printf "\n\033[1;32m[\033[0;31mx\033[1;32m] \033[0;31mDid not find the required filename.. Canceled!\n\n"
+  rm -rf $focal; exit 1;
 else
-  color="$colors"
+  (cd $focal/ && glib-compile-resources focalgdm3.gresource.xml && mv focalgdm3.gresource ..)
 fi
 
-if ! [ -z "$colors" ]; then
-  if ! [[ "$colors" =~ ^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$ ]]; then
-  printf "\033[0;31mThe hex color you input is invalid!\nExiting\e[0m..\n"
-  exit 1
-  fi
-fi
-}
+rm -rf $focal
+update-alternatives --quiet --install $gnomeshell/gdm3-theme.gresource gdm3-theme.gresource $focal_gsource 0
+update-alternatives --quiet --set gdm3-theme.gresource $focal_gsource
 
-banner(){
-  clear;
-printf "\e[0m\e[0;34mDistro:\033[0;32m "$id"\n
-        \e[0m\033[92m[ \033[1;33mCHANGE BACKGROUND LOGIN SCREEN\e[0m\033[92m ]\n\n"
-}
+if [[ -e $focal_gsource ]]; then
 
-case "$1" in
-kali|-kali)
+printf "
 
-if [ "$rolling" == "Kali" ]; then
-  banner
-  chooser
+---------------------------------------------------------------
+All is done!! RESTART And See the New Login-Background :)
+---------------------------------------------------------------\n\n";
+exit 0;
 else
-  printf "\033[1;33mThe script only runs if you are using Kali Linux\n"
-  exit 1;
+  printf "\n\033[0;31mLogin Background cannot be created.\e[0m\n"
 fi
+}
 
-kali_gs
+##########< configure background login kali linux >##########
+function kali_configure() {
 
-printf "\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] \e[0mMaking theme script.."
-echo "<?xml version="1.0" encoding="UTF-8"?>" > $css/gnome-shell-theme.gresource.xml;
-sleep 1
-echo "<gresources>" >> $css/gnome-shell-theme.gresource.xml
-echo '  <gresource prefix="/org/gnome/shell/theme">' >> $css/gnome-shell-theme.gresource.xml
-for i in `gresource list /usr/share/gnome-shell/gnome-shell-theme.gresource | sed 's/.......................//'`; do
-  echo "    <file>$i</file>" >> $css/gnome-shell-theme.gresource.xml
+rm -rf /tmp/gnome-shell
+install -d ${tmp_gnomeshell}/icons/scalable/actions/
+install -d ${tmp_gnomeshell}/icons/scalable/status/
+
+printf "\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] \e[0mMaking theme script xml.."
+for tmp in $(gresource list $gnomeshell/theme/$(basename -a $gsource_kali)); do
+  gresource extract $gnomeshell/theme/$(basename -a $gsource_kali) $tmp > /tmp/gnome-shell/${tmp#\/org\/gnome\/shell/}
 done
-echo "  </gresource>" >> $css/gnome-shell-theme.gresource.xml
-echo "</gresources>" >> $css/gnome-shell-theme.gresource.xml
 
-#    background-repeat: no-repeat;
-#    background-size: cover;
-#    background-position: center;
-#    -webkit-filter: blur(5px);
-#    /* Safari 6.0 - 9.0 */
-#    filter: blur(5px);
+echo "<?xml version="1.0" encoding="UTF-8"?>" > $tmp_gnomeshell/gnome-shell-theme.gresource.xml;
+echo "<gresources>" >> $tmp_gnomeshell/gnome-shell-theme.gresource.xml
+echo '  <gresource prefix="/org/gnome/shell/theme">' >> $tmp_gnomeshell/gnome-shell-theme.gresource.xml
+
+for i in $(gresource list $gnomeshell/theme/$(basename -a $gsource_kali) | sed 's/.......................//'); do
+  echo "    <file>$i</file>" >> $tmp_gnomeshell/gnome-shell-theme.gresource.xml
+done
+
+echo "  </gresource>" >> $tmp_gnomeshell/gnome-shell-theme.gresource.xml
+echo "</gresources>" >> $tmp_gnomeshell/gnome-shell-theme.gresource.xml
 
 grep -v "background: #2e3436 url(resource:///org/gnome/shell/theme/
   background: #41494c url(resource:///org/gnome/shell/theme/
@@ -307,67 +209,96 @@ grep -v "background: #2e3436 url(resource:///org/gnome/shell/theme/
   background-size: 896px 672px;
   background-size: 1024px 672px;
   background-repeat: no-repeat;
-  background-position: center;" ${css}/gnome-shell.css > ${css}/gnome.txt
+  background-position: center;" ${tmp_gnomeshell}/gnome-shell.css > ${tmp_gnomeshell}/gnome.txt
 
-checkingkali
-sleep 2;
-cat ${css}/gnome.txt > ${css}/gnome-shell.css
-rm -rf ${css}/gnome.txt
 
-(cd ${css}/ && glib-compile-resources gnome-shell-theme.gresource.xml)
-
-if [ ! -e ${css}/gnome-shell-theme.gresource ]; then
-  printf "\n\033[1;31mUnable to compile gnome-shell-theme. Something went wrong!
-Use command: \e[0m\e[1;92msudo bash $(basename -a $0) --reset\033[1;31m
-to reset your login background first. then try running the script again.\n"
-  rm -rf /tmp/gnome-shell/
-  exit 1;
+printf "\n\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] \e[0mChecking script..";sleep 1;
+if [[ $images -eq 1 ]]; then
+  cp $image $tmp_gnomeshell/
+  sed -i '/#lockDialogGroup {/a\  background: #41494c url(resource:///org/gnome/shell/theme/'$(basename -a $image)');\n  background-size: cover;\n  background-repeat: no-repeat;\n  background-position: center; }' ${tmp_gnomeshell}/gnome.txt
+  sed -i '/gnome-shell.css/a\    <file>'$(basename $image)'</file>' $tmp_gnomeshell/gnome-shell-theme.gresource.xml
+  if ! grep -q $(basename -a $image) $tmp_gnomeshell/gnome.txt; then
+    printf "\n\033[1;32m[\033[0;31mx\033[1;32m] \033[0;31mCan't find the image name in script.\n"; exit 1;
+  fi
+elif [[ $color_background -eq 2 ]]; then
+  sed -i "/background-color: #41494c;/d" $tmp_gnomeshell/gnome.txt;
+  sed -i "/#lockDialogGroup {/a\  background-color: $colors; }" $tmp_gnomeshell/gnome.txt
 fi
 
-if [ ! -e $kali_gsource.bak ]; then
-  mv $kali_gsource $kali_gsource.bak
+cat ${tmp_gnomeshell}/gnome.txt > ${tmp_gnomeshell}/gnome-shell.css
+(cd ${tmp_gnomeshell}/ && glib-compile-resources gnome-shell-theme.gresource.xml)
+
+if [[ ! -e ${tmp_gnomeshell}/gnome-shell-theme.gresource ]]; then
+  printf "\n\033[1;31mcompilation not found, something when wrong!\n"; exit 1;
 fi
 
-mv ${css}/$(basename -a $kali_gsource) $dir
+mv ${tmp_gnomeshell}/$(basename -a $gsource_kali) $gnomeshell
 rm -rf /tmp/gnome-shell
-succes
-;;
+printf "
 
-ubuntu|-ubuntu)
+---------------------------------------------------------------
+All is done!! RESTART And See the New Login-Background :)
+---------------------------------------------------------------\n"
+exit 0;
+}
 
-if [ "$distro" == "Ubuntu" ] && [ $UBUNTU_CODENAME == "focal" ]; then
-  banner
-  chooser
-else
-  printf "\033[1;33mThe script only runs if you are using Ubuntu 20.04\n"
-  exit 1;
-fi
+##########< help command >##########
+function help_command() {
+printf "Usage: $(basename -a $0) <options>
 
-if [ ! -d $focal ]; then
-  install -d $focal/icons/scalable/actions
-fi
+ --kali  | kali   -- Change Login Background for Kali Linux
+ --ubuntu| ubuntu -- Change Login Background for Ubuntu
+ --reset | reset  -- Back Original Background for
+                      (Kali Linux & Ubuntu)
+ --help  | help   -- Help Command\n\n"; exit 0;
+}
 
-touch $focal/gdm3.css $focal/focalgdm3.gresource.xml
-printf "\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] \e[0mMaking theme Script.."
-ubuntu_gs
+##########< simple banner >##########
+function banner() {
+clear;printf "\e[0m\e[0;34mDistro:\033[1;32m "$id"\n\n\t\e[0m\033[92m[--\033[1;33mCHANGE BACKGROUND LOGIN SCREEN\e[0m\033[92m--]\n\n"
+}
 
-checkingubuntu
+case $1 in
+  kali|--kali )
+    if [[ $kali == "Kali" ]]; then
+        if [[ ! -d $gnomeshell/theme ]]; then
+          install -d $gnomeshell/theme; cp $gsource_kali $gnomeshell/theme
+        else
+          if [[ ! -e $gnomeshell/theme/$(basename -a $gsource_kali) ]]; then
+            cp $gsource_kali $gnomeshell/theme
+          fi
+        fi
+        banner; chooser_path; kali_configure
+    else
+        printf "\033[1;33mThe script only runs if you are using Kali Linux\n"; exit 1;
+    fi ;;
 
-if [ -e $focal_gsource ]; then
-succes
-else
-  printf "\n\033[0;31mLogin Background cannot be created.\e[0m\n"
-fi
-;;
+  ubuntu|--ubuntu )
+    if [[ $UBUNTU_CODENAME == "focal" ]] || [[ $UBUNTU_CODENAME == "groovy" ]]; then
+      banner; chooser_path; ubuntu_configure
+    else
+      printf "\033[1;33mThe script only runs if you are using Ubuntu 20.04\n"; exit 1;
+    fi ;;
 
-reset|-reset|--reset)
-reseting
-;;
+  reset|--reset)
+    if [[ -e $gnomeshell/theme/$(basename -a $gsource_kali) ]]; then
+      mv $gnomeshell/theme/$(basename -a $gsource_kali) $gnomeshell
+      printf "\n\e[0mReset has been \e[0m\e[1;92msuccessfully..\n\e[0mNow your $id Linux login background is back to normal.\n\n"; exit 0;
 
-help|-h|--help)
-help_command
-;;
-*)
-printf "\033[92mUsage:\e[0m $(basename -a $0) --help\n"
+    elif [[ -e $focal_gsource ]]; then
+      update-alternatives --quiet --set gdm3-theme.gresource $gsource_ubuntu; rm -rf /usr/local/share/gnome-shell/
+      printf "\n\e[0mReset has been \e[0m\e[1;92msuccessfully..\n\e[0mNow your $id login background is back to normal.\n\n"; exit 0;
 
+    else
+      printf "
+      Nothing needs resetting.
+      Login background is still the original default $id..\n\n"; exit 0
+    fi ;;
+
+  help|-h|--help )
+    help_command ;;
+
+  *)
+    help_command ;;
 esac
+#done
