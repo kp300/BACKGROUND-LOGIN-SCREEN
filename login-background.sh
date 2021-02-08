@@ -258,6 +258,7 @@ function banner() {
 clear;printf "\e[0m\e[0;34mDistro:\033[1;32m "$id"\n\n\t\e[0m\033[92m[--\033[1;33mCHANGE BACKGROUND LOGIN SCREEN\e[0m\033[92m--]\n\n"
 }
 
+##########< main script >##########
 case $1 in
   kali|--kali )
     if [[ $kali == "Kali" ]]; then
@@ -270,14 +271,14 @@ case $1 in
         fi
         banner; chooser_path; kali_configure
     else
-        printf "\033[1;33mThe script only runs if you are using Kali Linux\n"; exit 1;
+        printf "\033[1;33mThe script only runs if you are using Kali Linux..\n"; exit 1;
     fi ;;
 
   ubuntu|--ubuntu )
     if [[ $UBUNTU_CODENAME == "focal" ]] || [[ $UBUNTU_CODENAME == "groovy" ]]; then
       banner; chooser_path; ubuntu_configure
     else
-      printf "\033[1;33mThe script only runs if you are using Ubuntu 20.04\n"; exit 1;
+      printf "\033[1;33mThe script only runs if you are using Ubuntu..\n"; exit 1;
     fi ;;
 
   reset|--reset)
