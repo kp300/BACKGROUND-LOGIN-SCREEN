@@ -39,3 +39,7 @@ sudo bash login-background.sh ubuntu
 sudo bash login-background.sh --reset
 ```
 
+# Donate
+***Buy me a coffee! :coffee:***
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://ko-fi.com/kalitutorial)
