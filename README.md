@@ -22,6 +22,8 @@ cd BACKGROUND-LOGIN-SCREEN
 sudo chmod +x login-background.sh
 ```
 
+### YouTube: https://www.youtube.com/watch?v=NHftNCVggn8
+
 **Kali Linux**:
 
 ```bash
@@ -33,7 +35,7 @@ sudo bash login-background.sh kali
 ```bash
 sudo bash login-background.sh ubuntu
 ```
-### Back Original Background for **kali linux** and **ubuntu**: (Reset automatically)
+**Back Original Background for **kali linux** and **ubuntu**: (Reset automatically)**
 
 ```bash
 sudo bash login-background.sh --reset
