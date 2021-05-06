@@ -26,6 +26,9 @@ sudo chmod +x login-background.sh
  - [Change Background Kali Linux](https://www.youtube.com/watch?v=NHftNCVggn8&t=1s)
  - [Change Background Ubuntu](https://www.youtube.com/watch?v=imdXro-2YZ4)
 
+### Manual
+ - [Manually change the Kali Linux login background](https://www.duniamastah.com/2021/04/cara-ganti-background-login-screen.html)
+
 **Kali Linux**:
 
 ```bash
