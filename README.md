@@ -1,10 +1,10 @@
 ## Change Background Login Screen
-
-This script only changes the login background on **Kali Linux 2020.4** and **Ubuntu 20.04 & Ubuntu 20.10**. the latest. 
-You can choose to change the login background with an image or your favorite color. the script will do this for you automatically.
+ 
+You can choose to change the login background with an image [PNG or JPG] or your favorite color. the script will do this for you automatically.
 
 ### TESTED:
 * Kali Linux 2020.4 [Desktop GNOME]
+* Ubuntu 21.04
 * Ubuntu 20.10
 * Ubuntu 20.04
 
@@ -20,14 +20,12 @@ Instructions on how to use the **Background Login Screen**:
 git clone https://github.com/kp300/BACKGROUND-LOGIN-SCREEN.git
 cd BACKGROUND-LOGIN-SCREEN
 sudo chmod +x login-background.sh
+sudo bash login-background.sh
 ```
 
 ### YouTube: 
  - [Change Background Kali Linux](https://www.youtube.com/watch?v=NHftNCVggn8&t=1s)
  - [Change Background Ubuntu](https://www.youtube.com/watch?v=imdXro-2YZ4)
-
-### Manual
- - [Manually change the Kali Linux login background](https://www.duniamastah.com/2021/04/cara-ganti-background-login-screen.html)
 
 **Kali Linux**:
 
@@ -40,11 +38,14 @@ sudo bash login-background.sh kali
 ```bash
 sudo bash login-background.sh ubuntu
 ```
-**Back Original Background for **kali linux** and **ubuntu**: (Reset automatically)**
+**Back Original Background for **Kali Linux** and **Ubuntu**: (Reset automatically)**
 
 ```bash
 sudo bash login-background.sh --reset
 ```
+
+### Manual
+ - [Manually change the Kali Linux login background](https://www.duniamastah.com/2021/04/cara-ganti-background-login-screen.html)
 
 # Donate
 ***Buy me a coffee! :coffee:***
