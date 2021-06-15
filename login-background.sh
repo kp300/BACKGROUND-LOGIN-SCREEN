@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 
 #   CHANGE BACKGROUND LOGIN SCREEN FOR Kali Linux 2021 & Ubuntu 2021
-# ---> [Kali Linux 2020.4] & [Ubuntu 20.04, Ubuntu 20.10]
 
-################################# < Support me on (Media Social) > #################################
-# old Youtube : https://youtube.com/KaliPentesting < banned by Youtube :@
-# New Youtube : https://www.youtube.com/channel/UCmTe8G5kk_0UvV2OkxrQJrQ
-# Facebook    : https://fb.me/KaliPentesting
-# Twitter     : @KaliPentesting
+######## < Support me on (Media Social) > ########
+# New Youtube : https://www.youtube.com/Mahinesta
+# Facebook    : https://fb.me/Mahinesta
+# Twitter     : @Mahinesta
 
 ################################# < grep User and Distro > #################################
 id=$(awk '{print $1}' /etc/issue)
@@ -24,6 +22,7 @@ focal="/usr/local/share/gnome-shell/theme/focalgdm3"
 focal_gsource="/usr/local/share/gnome-shell/theme/focalgdm3.gresource"
 ubuntu=$(hostnamectl | grep Ubuntu | cut -d' ' -f5)
 UBUNTU_CODENAME=$(cat /etc/os-release | grep UBUNTU_CODENAME | cut -d = -f 2)
+
 
 ##########< use root >##########
 if [[ $(id -u) != "0" ]]; then
@@ -51,7 +50,7 @@ if [[ $choose_number -eq 1 ]] && [[ $choose_number -eq 01 ]]; then
   read -p $'\e[1;77m[\e[0m\e[1;92m?\e[0m\e[1;77m]\e[0m Open the folder and Select Image? [Y/n]: ' openimage
   if [[ $openimage == "y" ]] || [[ $openimage == "Y" ]] || [[ $openimage == "yes" ]] || [[ $openimage == "YES" ]]; then
     images=1
-    image=$(zenity --file-filter=""*.png" "*.jpg"" --title="Choose Image .PNG or .JPG" --file-selection --filename="/home/"$user"/")
+    image=$(zenity --file-filter=""*.png" "*.jpg"" --title="Choose Image .PNG or .JPG" --file-selection --filename="/home/"$user"/" 2>/dev/null)
   else
     images=1
     printf "
@@ -89,7 +88,7 @@ fi
 ##########< configure background login ubuntu >##########
 function ubuntu_configure() {
 
-if [ ! -d $focal ]; then
+if [[ ! -d $focal ]]; then
   install -d $focal/icons/scalable/actions
 fi
 
@@ -169,6 +168,54 @@ exit 0;
 else
   printf "\n\033[0;31mLogin Background cannot be created.\e[0m\n"
 fi
+}
+function ubuntu_configure_hirsute {
+  printf "\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] \e[0mMaking theme Script.."
+install -d /tmp/gnome-shell/theme/icons/scalable/actions/
+install -d /tmp/gnome-shell/theme/icons/scalable/status/
+install -d /tmp/gnome-shell/theme/Yaru-light/
+install -d /tmp/gnome-shell/theme/Yaru/
+
+echo "<?xml version="1.0" encoding="UTF-8"?>" > $tmp_gnomeshell/gdm3-theme.gresource.xml;
+echo "<gresources>" >> $tmp_gnomeshell/gdm3-theme.gresource.xml
+echo '  <gresource prefix="/org/gnome/shell/theme">' >> $tmp_gnomeshell/gdm3-theme.gresource.xml
+
+for gs in $(gresource list $gsource_ubuntu); do
+  gresource extract $gsource_ubuntu $gs > /tmp/gnome-shell/${gs#\/org\/gnome\/shell/}
+done
+
+for i in $(gresource list $gsource_ubuntu | sed 's/.......................//'); do
+  echo "    <file>$i</file>" >> $tmp_gnomeshell/gdm3-theme.gresource.xml
+done
+
+printf "\n\e[1;77m[\e[0m\e[1;92m+\e[0m\e[1;77m] \e[0mChecking script..";sleep 1;
+if [[ $images -eq 1 ]]; then
+  echo "    <file>$(basename -a $image)</file>" >> $tmp_gnomeshell/gdm3-theme.gresource.xml
+  cp $image $tmp_gnomeshell/
+  sed -i "/background-color: #4f194c; }/d" $tmp_gnomeshell/gdm3.css
+  sed -i '/#lockDialogGroup {/a\  background: #41494c url(resource:///org/gnome/shell/theme/'$(basename -a $image)');\n  background-size: cover;\n  background-repeat: no-repeat;\n  background-position: center; }' $tmp_gnomeshell/gdm3.css
+  if ! grep -q $(basename -a $image) $tmp_gnomeshell/gdm3.css; then
+    printf "\n\033[1;32m[\033[0;31mx\033[1;32m] \033[0;31mCan't find the image name in script.\n"; exit 1;
+  fi
+elif [[ $color_background -eq 2 ]]; then
+  sed -i "/background-color: #4f194c;/d" $tmp_gnomeshell/gdm3.css;
+  sed -i "/#lockDialogGroup {/a\  background-color: $colors; }" $tmp_gnomeshell/gdm3.css;
+fi
+
+echo "  </gresource>" >> $tmp_gnomeshell/gdm3-theme.gresource.xml
+echo "</gresources>" >> $tmp_gnomeshell/gdm3-theme.gresource.xml
+mv $gnomeshell/gdm3-theme.gresource $gnomeshell/theme
+(cd ${tmp_gnomeshell}/ && glib-compile-resources gdm3-theme.gresource.xml)
+mv ${tmp_gnomeshell}/gdm3-theme.gresource $gnomeshell
+
+rm -rf /tmp/gnome-shell
+printf "
+
+---------------------------------------------------------------
+All is done!! RESTART And See the New Login-Background :)
+---------------------------------------------------------------\n"
+exit 0;
+
 }
 
 ##########< configure background login kali linux >##########
@@ -262,6 +309,7 @@ clear;printf "\e[0m\e[0;34mDistro:\033[1;32m "$id"\n\n\t\e[0m\033[92m[--\033[1;3
 case $1 in
   kali|--kali )
     if [[ $kali == "Kali" ]]; then
+        rm -rf /tmp/gnome-shell
         if [[ ! -d $gnomeshell/theme ]]; then
           install -d $gnomeshell/theme; cp $gsource_kali $gnomeshell/theme
         else
@@ -275,8 +323,11 @@ case $1 in
     fi ;;
 
   ubuntu|--ubuntu )
+    rm -rf /tmp/gnome-shell
     if [[ $UBUNTU_CODENAME == "focal" ]] || [[ $UBUNTU_CODENAME == "groovy" ]]; then
       banner; chooser_path; ubuntu_configure
+    elif [[ $UBUNTU_CODENAME == "hirsute" ]]; then
+      banner; chooser_path; ubuntu_configure_hirsute
     else
       printf "\033[1;33mThe script only runs if you are using Ubuntu..\n"; exit 1;
     fi ;;
@@ -288,6 +339,10 @@ case $1 in
 
     elif [[ -e $focal_gsource ]]; then
       update-alternatives --quiet --set gdm3-theme.gresource $gsource_ubuntu; rm -rf /usr/local/share/gnome-shell/
+      printf "\n\e[0mReset has been \e[0m\e[1;92msuccessfully..\n\e[0mNow your $id login background is back to normal.\n\n"; exit 0;
+
+    elif [[ -e $gnomeshell/theme/gdm3-theme.gresource ]]; then
+      mv $gnomeshell/theme/gdm3-theme.gresource $gnomeshell
       printf "\n\e[0mReset has been \e[0m\e[1;92msuccessfully..\n\e[0mNow your $id login background is back to normal.\n\n"; exit 0;
 
     else
@@ -302,4 +357,3 @@ case $1 in
   *)
     help_command ;;
 esac
-#done
