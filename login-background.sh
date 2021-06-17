@@ -60,6 +60,8 @@ if [[ $choose_number -eq 1 ]] && [[ $choose_number -eq 01 ]]; then
   fi
   if [[ ! -e $image ]]; then
     printf "\033[0;31mThe image path you selected does not exist or cannot be found\e[0m\n"; exit 1;
+  elif [[ ! -z $image ]]; then
+    printf "\033[0;31mPlease change the image name (No spaces) then run the script again!\e[0m\n"; exit 1;
   fi
 
 elif [[ $choose_number -eq 2 ]] && [[ $choose_number -eq 02 ]]; then
