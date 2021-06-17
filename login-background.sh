@@ -60,8 +60,6 @@ if [[ $choose_number -eq 1 ]] && [[ $choose_number -eq 01 ]]; then
   fi
   if [[ ! -e $image ]]; then
     printf "\033[0;31mThe image path you selected does not exist or cannot be found\e[0m\n"; exit 1;
-  elif [[ ! -z $image ]]; then
-    printf "\033[0;31mPlease change the image name (No spaces) then run the script again!\e[0m\n"; exit 1;
   fi
 
 elif [[ $choose_number -eq 2 ]] && [[ $choose_number -eq 02 ]]; then
@@ -206,8 +204,13 @@ fi
 
 echo "  </gresource>" >> $tmp_gnomeshell/gdm3-theme.gresource.xml
 echo "</gresources>" >> $tmp_gnomeshell/gdm3-theme.gresource.xml
-mv $gnomeshell/gdm3-theme.gresource $gnomeshell/theme
+
 (cd ${tmp_gnomeshell}/ && glib-compile-resources gdm3-theme.gresource.xml)
+
+if [[ ! -e ${tmp_gnomeshell}/gdm3-theme.gresource ]]; then
+  printf "\n\033[1;31mcompilation not found, something is wrong!\n\n"; exit 1;
+fi
+
 mv ${tmp_gnomeshell}/gdm3-theme.gresource $gnomeshell
 
 rm -rf /tmp/gnome-shell
@@ -278,7 +281,7 @@ cat ${tmp_gnomeshell}/gnome.txt > ${tmp_gnomeshell}/gnome-shell.css
 (cd ${tmp_gnomeshell}/ && glib-compile-resources gnome-shell-theme.gresource.xml)
 
 if [[ ! -e ${tmp_gnomeshell}/gnome-shell-theme.gresource ]]; then
-  printf "\n\033[1;31mcompilation not found, something when wrong!\n"; exit 1;
+  printf "\n\033[1;31mcompilation not found, something is wrong!\n"; exit 1;
 fi
 
 mv ${tmp_gnomeshell}/$(basename -a $gsource_kali) $gnomeshell
@@ -329,6 +332,9 @@ case $1 in
     if [[ $UBUNTU_CODENAME == "focal" ]] || [[ $UBUNTU_CODENAME == "groovy" ]]; then
       banner; chooser_path; ubuntu_configure
     elif [[ $UBUNTU_CODENAME == "hirsute" ]]; then
+      if [[ ! -e $gnomeshell/theme/gdm3-theme.gresource ]]; then
+        cp $gnomeshell/gdm3-theme.gresource $gnomeshell/theme
+      fi
       banner; chooser_path; ubuntu_configure_hirsute
     else
       printf "\033[1;33mThe script only runs if you are using Ubuntu..\n"; exit 1;
