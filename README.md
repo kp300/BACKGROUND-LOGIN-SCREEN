@@ -2,8 +2,10 @@
  
 You can choose to change the login background with an image [PNG or JPG] or your favorite color. the script will do this for you automatically.
 
-### TESTED:
-* Kali Linux 2020.4 [Desktop GNOME]
+### TESTED
+**GNOME DESKTOP**:
+* Kali Linux 2021.1 and 2021.2 
+* Kali Linux 2020.4
 * Ubuntu 21.04
 * Ubuntu 20.10
 * Ubuntu 20.04
