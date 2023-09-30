@@ -4,11 +4,11 @@ Automatic and fast script to change Kali Linux login screen background.
 
 There are five options you can try:
 
-* Change login screen with image [.PNG or .JPG]
-* Changed the login screen with a blurry image
-* Change login screen with color [Hex Color]
-* Change login screen with Vertical gradient 
-* Change login screen with Horizontal gradient
+* Change login screen with **image** [.PNG or .JPG]
+* Changed the login screen with a **blurry image**
+* Change login screen with **color** [Hex Color]
+* Change login screen with **Vertical gradient** [Hex Color]
+* Change login screen with **Horizontal gradient** [Hex Color]
 
 ## TESTED
 **GNOME Display Manager**:
@@ -16,9 +16,18 @@ There are five options you can try:
 * Kali Linux 2022
 
 ### Screenshoot
-| Ubuntu | Kali Linux	|
+| Image | Image Blur (7%)	|
 | ------------  | ------------ |
-|![background-login-ubuntu](https://user-images.githubusercontent.com/58439463/96018458-7dd4e980-0e75-11eb-8d8d-6d33c3b3ebaf.png)|![background-login-kali](https://user-images.githubusercontent.com/58439463/87871917-af592880-c9de-11ea-90dc-01732f456b2d.png)
+|![image](https://github.com/kp300/BACKGROUND-LOGIN-SCREEN/assets/58439463/6671eb0a-b3f8-45fb-be09-36090b2bb3b4)|![blur](https://github.com/kp300/BACKGROUND-LOGIN-SCREEN/assets/58439463/f9f3075f-6a23-4678-bc49-87e41f1b24b5)
+
+| Horizontal Gradient | Vertical Gradient	|
+| ------------  | ------------ |
+|![horizontal](https://github.com/kp300/BACKGROUND-LOGIN-SCREEN/assets/58439463/ad2d29fb-4cd9-4861-a2e5-a554e5981ef0)|![gradient vertical](https://github.com/kp300/BACKGROUND-LOGIN-SCREEN/assets/58439463/e7a93ff4-84ec-4218-b446-3d3a8ba3c506)
+
+| Color | RED Color	|
+| ------------  | ------------ |
+|![color](https://github.com/kp300/BACKGROUND-LOGIN-SCREEN/assets/58439463/e744d058-f960-49a2-8f82-3bc816ad9d95)|![red](https://github.com/kp300/BACKGROUND-LOGIN-SCREEN/assets/58439463/73a6546b-c659-410e-a0ed-cb24a6367961)
+
 
 ### How To Use :
 Instructions on how to use the **Background Login Screen**:
@@ -27,14 +36,13 @@ Instructions on how to use the **Background Login Screen**:
 git clone https://github.com/kp300/BACKGROUND-LOGIN-SCREEN.git
 cd BACKGROUND-LOGIN-SCREEN
 sudo chmod +x kali-login-background.sh
-sudo bash kali-login-background.sh --usage
+sudo ./kali-login-background.sh --usage
 ```
 
-### YouTube: 
+### YouTube: Old version!
  - [Change Background Kali Linux](https://www.youtube.com/watch?v=NHftNCVggn8&t=1s)
- - [Change Background Ubuntu](https://www.youtube.com/watch?v=imdXro-2YZ4)
 
 # Donate
-**Support me or Buy me a coffee! :coffee:** :)
+**Support me Or Buy me a coffee! :coffee:** :)
 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://ko-fi.com/kp300)
