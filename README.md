@@ -1,14 +1,19 @@
-## Change Background Login Screen
+# Change Background Login Screen Kali Linux
  
-You can choose to change the login background with an image [PNG or JPG] or your favorite color. the script will do this for you automatically.
+Automatic and fast script to change Kali Linux login screen background.
 
-### TESTED
-**GNOME DESKTOP**:
-* Kali Linux 2021.1 and 2021.2 
-* Kali Linux 2020.4
-* Ubuntu 21.04
-* Ubuntu 20.10
-* Ubuntu 20.04
+There are five options you can try:
+
+* Change login screen with image [.PNG or .JPG]
+* Changed the login screen with a blurry image
+* Change login screen with color [Hex Color]
+* Change login screen with Vertical gradient 
+* Change login screen with Horizontal gradient
+
+## TESTED
+**GNOME Display Manager**:
+* Kali Linux 2023.1, 2023.2, 2023.3 
+* Kali Linux 2022
 
 ### Screenshoot
 | Ubuntu | Kali Linux	|
@@ -21,35 +26,15 @@ Instructions on how to use the **Background Login Screen**:
 ```bash
 git clone https://github.com/kp300/BACKGROUND-LOGIN-SCREEN.git
 cd BACKGROUND-LOGIN-SCREEN
-sudo chmod +x login-background.sh
-sudo bash login-background.sh
+sudo chmod +x kali-login-background.sh
+sudo bash kali-login-background.sh --usage
 ```
 
 ### YouTube: 
  - [Change Background Kali Linux](https://www.youtube.com/watch?v=NHftNCVggn8&t=1s)
  - [Change Background Ubuntu](https://www.youtube.com/watch?v=imdXro-2YZ4)
 
-**Kali Linux**:
-
-```bash
-sudo bash login-background.sh kali
-```
-
-**Ubuntu 20.10 && Ubuntu 20.04**:
-
-```bash
-sudo bash login-background.sh ubuntu
-```
-**Back Original Background for **Kali Linux** and **Ubuntu**: (Reset automatically)**
-
-```bash
-sudo bash login-background.sh --reset
-```
-
-### Manual
- - [Manually change the Kali Linux login background](https://www.duniamastah.com/2021/04/cara-ganti-background-login-screen.html)
-
 # Donate
-***Buy me a coffee! :coffee:***
+**Support me or Buy me a coffee! :coffee:** :)
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://ko-fi.com/kalitutorial)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://ko-fi.com/kp300)
