@@ -20,7 +20,11 @@ There are five options you can try:
 | ------------  | ------------ |
 |![image](https://github.com/kp300/BACKGROUND-LOGIN-SCREEN/assets/58439463/6671eb0a-b3f8-45fb-be09-36090b2bb3b4)|![blur](https://github.com/kp300/BACKGROUND-LOGIN-SCREEN/assets/58439463/f9f3075f-6a23-4678-bc49-87e41f1b24b5)
 
-| Horizontal Gradient | Vertical Gradient	|
+| Image | Image Blur (7%)	|
+| ------------  | ------------ |
+|![ss2](https://github.com/kp300/BACKGROUND-LOGIN-SCREEN/assets/58439463/81abcc08-1900-4e49-aac0-9b0a6879c0f0)|![ss1](https://github.com/kp300/BACKGROUND-LOGIN-SCREEN/assets/58439463/46f63dd8-1ed1-4aca-b12e-8191f312dd44)
+
+| Vertical Gradient | Horizontal Gradient	|
 | ------------  | ------------ |
 |![horizontal](https://github.com/kp300/BACKGROUND-LOGIN-SCREEN/assets/58439463/ad2d29fb-4cd9-4861-a2e5-a554e5981ef0)|![gradient vertical](https://github.com/kp300/BACKGROUND-LOGIN-SCREEN/assets/58439463/e7a93ff4-84ec-4218-b446-3d3a8ba3c506)
 
