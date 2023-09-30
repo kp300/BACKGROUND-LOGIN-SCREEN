@@ -11,7 +11,7 @@
 
 ### Color
 Red='\033[0;31m'; BRed='\033[1;31m'; BGreen='\033[1;32m'; BYellow='\033[1;33m'; IYellow='\033[0;93m';
-BBlue='\033[1;34m'; BPurple='\033[1;35m'; BCyan='\033[1;36m'; BWhite='\033[1;37m'; Normal='\033[0m';
+BBlue='\033[1;34m'; BPurple='\033[1;35m'; BCyan='\033[1;36m'; BWhite='\033[1;37m'; Normal='\033[0m'; Gblue='\e[44m';
 
 self=$(basename -a $0)
 if [[ -z "$1" ]]; then
@@ -52,15 +52,16 @@ USAGE(){ ### Shows examples of usage commands
 # clear;	
 echo -e "${BCyan}#-- EXAMPLE COMMAND:
 
-${BWhite}With Image 		: ${Normal}sudo ./$self -img ~/Pictures/your_image.png
-${BWhite}With Image Blur 	: ${Normal}sudo ./$self -img ~/Pictures/your_image.png -blur 20%
+${BWhite}With Image 		: ${Gblue}sudo ./$self -img ~/Pictures/your_image.png${Normal}
+${BWhite}With Image Blur 	: ${Gblue}sudo ./$self -img ~/Pictures/your_image.png -blur 20%${Normal}
 ${BYellow}==> You can determine the blur sharpness value ranging from 5% to 50%
-${BWhite}With Color 		: ${Normal}sudo ./$self --color '#e25e31'
+${BWhite}With Color 		: ${Gblue}sudo ./$self --color '#e25e31'${Normal}
 ${BYellow}==> Get more colors here: https://www.color-hex.com
-${BWhite}With Gradient-Color	:${Normal}
- sudo ./$self -start \#4287f5 -end \#7207b0 -d vertical
+${BWhite}With Gradient-Color	: ${Gblue}sudo ./$self -start \#4287f5 -end \#7207b0 -d vertical${Normal}
+			  ${Gblue}sudo ./$self -start '"#4287f5"' -end '"#7207b0"' -d horizontal${Normal}
 ${BYellow}==> You can change the direction of the gradient horizontal or vertical${Normal}
- sudo ./$self -start '"#4287f5"' -end '"#7207b0"' -d horizontal"
+
+${BWhite}RESET TO ORIGINAL BACKGROUND SCREEN: ${Gblue}sudo ./$self --reset${Normal}"
 }
 
 DdisplayManager=$(cat /etc/X11/default-display-manager)
@@ -250,10 +251,12 @@ fi
 }
 
 PRINT_SUCCES(){ 
-#rm -rf /tmp/gnome-shell;
+rm -rf /tmp/gnome-shell;
 echo -e "${Normal}
 ---------------------------------------------------------------
-${BGreen}All is done!! RESTART And See the New Login-Background :)${Normal}
+${BGreen}All is done!!
+${Normal}Run the command: ${BGreen}sudo service gdm3 restart ${Normal}OR ${BGreen}RESTART
+And See New Login Background Screen :)${Normal}
 ---------------------------------------------------------------"
 }
 
@@ -261,7 +264,9 @@ RESTORE_GRESOURCE(){
 if [ -e "${destGST}/theme/$(basename -a $gresource).bak" ]; then
 	mv "${destGST}/theme/$(basename -a $gresource).bak" "${gresource}"
 	echo -e "${Normal}
-------------------------------------\nReset has been ${BGreen}successfully..\n${Normal}------------------------------------"
+------------------------------------
+Reset has been ${BGreen}successfully..
+${Normal}------------------------------------"
 else
 	echo -e "${Normal}\nNothing needs to be reset.\nThe login background is still normal."
 fi
