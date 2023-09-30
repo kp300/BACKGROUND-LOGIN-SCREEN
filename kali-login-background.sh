@@ -41,6 +41,7 @@ ${BYellow}OPTIONS:${Normal}
  -s|-start|-gradientstart 	background gradient start
  -e|-end|-gradientend		background gradient end
  -d|--direction 		gradient color direction [vertical or horizontal]
+ -r|-reset|--reset		Reset to original background screen
  -usage|--usage   		Example commands
  -h|--help 			Help commands
 
@@ -399,7 +400,7 @@ while [ ! -z "$1" ]; do
   				fi
 			fi
   			break ;;
-		-reset|--reset) RESTORE_GRESOURCE; exit 0 ;;			
+		-r|-reset|--reset) RESTORE_GRESOURCE; exit 0 ;;			
 		-usage|--usage) USAGE; exit 0 ;;
 		-h|--help) HELP_COMMAND; exit 0 ;;
      	*) echo -e "${Red}'"$1"' argument is invalid!"; exit 1 ;;
