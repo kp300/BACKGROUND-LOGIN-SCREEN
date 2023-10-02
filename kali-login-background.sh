@@ -151,7 +151,7 @@ EOF
 ### THEME Compiler
 COMPILE_RESOURCES() {
 (cd "${WorkGST}" && glib-compile-resources $file_gsxml)
-if [ -e ${WorkGST/$(basename -a $gresource)} ]; then
+if [ -e ${WorkGST}/$(basename -a $gresource) ]; then
 	mv "${WorkGST}/$(basename -a $gresource)" "${destGST}";
 	PRINT_SUCCES;
 	exit 0
