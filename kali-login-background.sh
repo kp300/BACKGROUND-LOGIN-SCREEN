@@ -243,7 +243,7 @@ img_tmp=$(echo $(basename -a "$image_path") | tr -d ' ')
 if [ -f "$image_path" ]; then
 	EXTRACT_RESOURCES; XML_RESOURCES;
 	cp "$image_path" $WorkGST/$img_tmp && chmod 777 $WorkGST/$img_tmp;
-	echo "";echo -e "${IYellow}SET IMAGE: ${Normal}"$(basename -a $image_path)"";
+	echo "";echo -e "${IYellow}SET IMAGE: ${Normal}$(basename -a "$image_path")";
 else
 	echo -e "${Red}Image not found!";
 	STOP_ERROR
