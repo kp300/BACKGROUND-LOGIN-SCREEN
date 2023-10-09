@@ -26,6 +26,7 @@ WorkGST="/tmp/gnome-shell/theme"
 file_gsxml="gnome-shell-theme.gresource.xml"
 file_gst="gnome-shell.css"
 KALI_V=$(cat /etc/os-release | sed -n 's/^VERSION=[[:space:]]*//p')
+DISTRO=$(lsb_release -i | awk '{print $3}')
 
 ### Stop if an error occurs
 STOP_ERROR(){ rm -rf /tmp/gnome-shell; exit 1; }
@@ -272,6 +273,11 @@ else
 fi
 }
 
+### Accurate for checking distro
+if [[ "$DISTRO" != "Kali" ]]; then
+	echo -e "${Red}Sorry! This script is only for ${DISTRO}";
+ 	exit 1
+fi
 
 ######### < START > ######### 
 while [ ! -z "$1" ]; do
