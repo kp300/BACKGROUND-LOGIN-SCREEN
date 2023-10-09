@@ -275,7 +275,7 @@ fi
 
 ### Accurate for checking distro
 if [[ "$DISTRO" != "Kali" ]]; then
-	echo -e "${Red}Sorry! This script is only for ${DISTRO}";
+	echo -e "${Red}Sorry! This script is only for Kali Linux";
  	exit 1
 fi
 
