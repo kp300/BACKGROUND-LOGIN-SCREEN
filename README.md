@@ -47,6 +47,5 @@ sudo ./kali-login-background.sh --usage
  - [Change Background Kali Linux](https://www.youtube.com/watch?v=NHftNCVggn8&t=1s)
 
 # Donate
-**Support me Or Buy me a coffee! :coffee:** :)
-
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://ko-fi.com/kp300)
+**Buy me a coffee! :coffee:** :)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.buymeacoffee.com/kp300)
