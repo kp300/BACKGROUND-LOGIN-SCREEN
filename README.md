@@ -43,7 +43,8 @@ sudo chmod +x kali-login-background.sh
 sudo ./kali-login-background.sh --usage
 ```
 
-### YouTube: Old version!
+### YouTube:
+ - [Change Background Kali Linux 2023](https://www.youtube.com/watch?v=NHftNCVggn8&t=1s)
  - [Change Background Kali Linux](https://www.youtube.com/watch?v=NHftNCVggn8&t=1s)
 
 # Donate
