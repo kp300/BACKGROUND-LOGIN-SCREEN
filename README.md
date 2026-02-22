@@ -12,6 +12,7 @@ There are five options you can try:
 
 ## TESTED
 **GNOME Display Manager**:
+* Kali Linux 2025.4
 * Kali Linux 2023.1, 2023.2, 2023.3 
 * Kali Linux 2022
 
