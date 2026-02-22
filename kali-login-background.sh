@@ -123,23 +123,27 @@ fi
 
 ### Extrack GNOME-SHELL-THEME
 EXTRACT_RESOURCES(){
-BACKUP_GRESOURCE	
-if ! [ -e "${destGST}/theme/$(basename -a ${gresource})" ]; then
-	cp "${gresource}" "${destGST}/theme"
-fi
-install -d "${WorkGST}" && touch "$WorkGST/${file_gsxml}"
-for gstheme in $(gresource list "${destGST}/theme/$(basename -a ${gresource})"); do
-  gresource extract "${destGST}/theme/$(basename -a ${gresource})" $gstheme > "${WorkGST}"/${gstheme#\/org\/gnome\/shell/\theme/}
-done
+    BACKUP_GRESOURCE    
+    rm -rf "${WorkGST}"
+    mkdir -p "${WorkGST}"
+    
+    # Explicitly extract the main CSS file first to guarantee it exists
+    gresource extract "${gresource}" /org/gnome/shell/theme/gnome-shell.css > "${WorkGST}/gnome-shell.css"
+    
+    # Safely iterate through files using native bash, creating subdirectories as needed
+    gresource list "${gresource}" | while read -r gstheme; do
+        if [[ "$gstheme" == "/org/gnome/shell/theme/"* ]]; then
+            rel_path="${gstheme#/org/gnome/shell/theme/}"
+            mkdir -p "${WorkGST}/$(dirname "$rel_path")"
+            gresource extract "${gresource}" "$gstheme" > "${WorkGST}/$rel_path"
+        fi
+    done
 }
 
 ### Create an XML Schema THEME
 XML_RESOURCES(){
-filesource="$(gresource list "${destGST}/theme/$(basename -a ${gresource})" | \
-awk '{gsub ("/", ""); print $0}' | \
-sed 's/orggnomeshelltheme//' | \
-find "${WorkGST}" -type f -printf "    <file>%P</file>\n")"
-cat << EOF > "${WorkGST}"/"${file_gsxml}"
+    filesource="$(cd "${WorkGST}" && find . -type f ! -name "${file_gsxml}" -printf "    <file>%P</file>\n")"
+    cat << EOF > "${WorkGST}/${file_gsxml}"
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/org/gnome/shell/theme">
@@ -177,18 +181,18 @@ fi
 
 ### Check image availability in Theme file
 CHECKING_IMG(){
-if grep -s -q $img_tmp ${WorkGST}/${file_gst} && \
-	grep -s -q $img_tmp ${WorkGST}/${file_gsxml};
+if grep -s -q "$img_tmp" "${WorkGST}/gnome-shell.css" && 
+    grep -s -q "$img_tmp" "${WorkGST}/${file_gsxml}";
 then
-	COMPILE_RESOURCES; 
+    COMPILE_RESOURCES;
 else
-	echo -e "${Red}Failed to add image inside theme!";
-	STOP_ERROR
-fi		
+    echo -e "${Red}Failed to add image inside theme!";
+    STOP_ERROR
+fi
 }
 
 VERSION_KALI_FORGRADIENTS(){
-if [[ "$KALI_V" == '"2023.3"' ]] || [[ "$KALI_V" == '"2023.4"' ]]; then
+if grep -q "\.login-dialog {" ${WorkGST}/${file_gst}; then
 	### The cover should not be removed
 	# new version kali
 	if ! grep -Fxq "} /* coverings */" ${WorkGST}/${file_gst}; then
@@ -209,13 +213,17 @@ fi
 }
 
 VERSION_KALI_FORIMG(){
-if [[ "$KALI_V" == '"2023.3"' ]] || [[ "$KALI_V" == '"2023.4"' ]]; then
-	echo -e "${IYellow}KALI VERSION: "${Normal}$KALI_V
-	SET_IMAGE_NEWVERSION
-else
-	echo -e "${IYellow}KALI VERSION: "${Normal}$KALI_V
-	SET_IMAGE
-fi
+    echo -e "${IYellow}KALI VERSION: ${Normal}$KALI_V"
+    sed -i "/<\/gresource>/i\    <file>$img_tmp<\/file>" "$WorkGST/$file_gsxml"
+    cat >> "${WorkGST}/gnome-shell.css" <<EOF
+
+#lockDialogGroup, .login-dialog {
+  background: #353535 url("resource:///org/gnome/shell/theme/${img_tmp}");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+EOF
 }
 
 SET_IMAGE_NEWVERSION(){
@@ -338,7 +346,7 @@ while [ ! -z "$1" ]; do
     			STOP_ERROR;
   			fi
 			EXTRACT_RESOURCES; XML_RESOURCES;
-			if [[ "$KALI_V" == '"2023.3"' ]] || [[ "$KALI_V" == '"2023.4"' ]]; then
+			if grep -q "\.login-dialog {" ${WorkGST}/${file_gst}; then
 				echo -e "${IYellow}KALI VERSION: "${Normal}$KALI_V;
 				sed -i '/.login-dialog {/{n;d}' ${WorkGST}/${file_gst};
 				sed -i "/.login-dialog {/a\  background-color: "$2"; }" ${WorkGST}/${file_gst};
@@ -392,7 +400,7 @@ while [ ! -z "$1" ]; do
     				# echo -e "${IYellow}GRADIENT DIRECTION: ${Normal}"${GRADIENT_DIRECTION}""
     				if [ "$#" -eq 2 ]; then
 						### The cover should not be removed
-						if [[ "$KALI_V" == '"2023.3"' ]] || [[ "$KALI_V" == '"2023.4"' ]]; then
+						if grep -q "\.login-dialog {" ${WorkGST}/${file_gst}; then
 							echo -e "${IYellow}KALI VERSION: "${Normal}$KALI_V
 							sed -i '/.login-dialog {/a\  background-gradient-start: '$GRADIENT_START';\n  background-gradient-end: '$GRADIENT_END';\n  background-gradient-direction: '$GRADIENT_DIRECTION';' \
 							${WorkGST}/${file_gst}; GRADIENT_CHECK; COMPILE_RESOURCES
